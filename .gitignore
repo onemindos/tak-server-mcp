@@ -69,4 +69,4 @@ docker-compose.override.yml
 
 # Lock files (optional - uncomment if not tracking)
 # package-lock.json
-# yarn.lock
+# yarn.locknode_modules

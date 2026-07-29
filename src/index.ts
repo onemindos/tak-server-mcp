@@ -13,7 +13,8 @@ const logger = pino({
   transport: {
     target: 'pino-pretty',
     options: {
-      colorize: true
+      colorize: true,
+      destination: 2
     }
   }
 });

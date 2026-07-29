@@ -56,8 +56,8 @@ temp/
 
 # TAK specific
 tak-data/
-missions/
-data-packages/
+/missions/
+/data-packages/
 
 # Docker
 .dockerignore

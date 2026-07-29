@@ -1,13 +1,24 @@
 import express, { Request, Response } from 'express';
 import { Server } from '@modelcontextprotocol/sdk/server/index.js';
-import { ServerTransport } from '@modelcontextprotocol/sdk/server/types.js';
 import { JSONRPCRequest, JSONRPCResponse } from '@modelcontextprotocol/sdk/types.js';
+
+interface ServerTransport {
+  start(): Promise<void>;
+  close(): Promise<void>;
+}
 import { Config } from '../config/index';
 import pino from 'pino';
 import { v4 as uuidv4 } from 'uuid';
 
 const logger = pino({
-  level: process.env.LOG_LEVEL || 'info'
+  level: process.env.LOG_LEVEL || 'info',
+  transport: {
+    target: 'pino-pretty',
+    options: {
+      colorize: true,
+      destination: 2
+    }
+  }
 });
 
 interface SSEClient {
@@ -21,7 +32,7 @@ export class SSEServerTransport implements ServerTransport {
   private app: express.Application;
   private config: Config;
   private clients: Map<string, SSEClient> = new Map();
-  private cleanupInterval?: NodeJS.Timer;
+  private cleanupInterval?: NodeJS.Timeout;
 
   constructor(server: Server, config: Config) {
     this.server = server;
@@ -175,7 +186,7 @@ export class SSEServerTransport implements ServerTransport {
         }
       };
 
-      this.server['handleRequest'](request, mockConnection);
+      (this.server as any)['handleRequest'](request, mockConnection);
     });
   }
 

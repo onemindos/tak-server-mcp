@@ -109,7 +109,9 @@ export function getConfig(): Config {
     apiToken: process.env.TAK_SERVER_API_TOKEN || config.takServer?.apiToken,
     clientCert: process.env.TAK_SERVER_CLIENT_CERT || config.takServer?.clientCert,
     clientKey: process.env.TAK_SERVER_CLIENT_KEY || config.takServer?.clientKey,
-    verifySsl: process.env.TAK_SERVER_VERIFY_SSL !== 'false'
+    verifySsl: process.env.TAK_SERVER_VERIFY_SSL
+      ? process.env.TAK_SERVER_VERIFY_SSL !== 'false'
+      : config.takServer?.verifySsl ?? true
   };
 
   config.mcp = {
